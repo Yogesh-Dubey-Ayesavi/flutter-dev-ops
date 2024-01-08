@@ -1,7 +1,7 @@
 FROM ubuntu
 
 
-ARG SSH_PRIVATE_KEY
+
 ARG KNOWN_HOSTS
 
 # uncomment the following if you want to ensure latest Dart and root CA bundle
@@ -9,12 +9,16 @@ ARG KNOWN_HOSTS
 # Setup 
 RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client curl python3 && apt-get upgrade -y && rm -rf /var/cache/apt
 #setup ssh key
+#setup ssh key
 
-# Set up SSH keys
-RUN mkdir -p /root/.ssh && \
-    echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa && \
-    chmod 600 /root/.ssh/id_rsa && \
-    echo "$KNOWN_HOSTS" > /root/.ssh/known_hosts
+# add credentials on build
+ARG SSH_PRIVATE_KEY
+RUN mkdir /root/.ssh/
+RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
+
+# make sure your domain is accepted
+RUN touch /root/.ssh/known_hosts
+RUN ssh-keyscan github.com >> /root/.ssh/known_host
 
 # Install Flutter
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
