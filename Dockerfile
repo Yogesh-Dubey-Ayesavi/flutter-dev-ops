@@ -14,11 +14,11 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client curl 
 # add credentials on build
 ARG SSH_PRIVATE_KEY
 RUN mkdir /root/.ssh/
-RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
+RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_ed25519
 
 # Add SSH key to SSH agent
 RUN eval $(ssh-agent -s) && \
-    ssh-add /root/.ssh/id_rsa
+    ssh-add /root/.ssh/id_ed25519
 
 # make sure your domain is accepted
 RUN touch /root/.ssh/known_hosts
