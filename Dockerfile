@@ -1,9 +1,6 @@
 FROM ubuntu
 
 
-
-ARG KNOWN_HOSTS
-
 # uncomment the following if you want to ensure latest Dart and root CA bundle
 #RUN apt -y update && apt -y upgrade
 # Setup 
@@ -22,7 +19,7 @@ RUN mkdir /root/.ssh/
 
 RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa
- 
+
 # Create known_hosts
 RUN touch /root/.ssh/known_hosts
 

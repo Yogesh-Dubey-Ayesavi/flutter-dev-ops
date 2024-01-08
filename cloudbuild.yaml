@@ -4,7 +4,6 @@ steps:
   args:
     - 'build'
     - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
-    - '--build-arg=KNOWN_HOSTS=$_KNOWN_HOSTS_'
     - '-t'
     - 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_'
     - '.'
