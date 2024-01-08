@@ -38,7 +38,6 @@ dependencies:
   ed_ui_widget: 
     git:
       url : git@github.com:nomanmurtaza786/ed_ui_widget.git
-      # url : https://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@github.com/nomanmurtaza786/ed_ui_widget.git
       ref: main  # Specify the branch, tag, or commit hash you want to use
 
 
