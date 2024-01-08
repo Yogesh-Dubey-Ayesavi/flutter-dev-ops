@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client curl 
 # add credentials on build
 ARG SSH_PRIVATE_KEY
 RUN mkdir /root/.ssh/
-RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_rsa
+RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa
 
 # make sure your domain is accepted
 RUN touch /root/.ssh/known_hosts
