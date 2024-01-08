@@ -16,3 +16,6 @@ steps:
 images:
 # Specify the Docker image to be pushed to GCR
 - 'gcr.io/YOUR_PROJECT_ID/my_flutter_image'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
