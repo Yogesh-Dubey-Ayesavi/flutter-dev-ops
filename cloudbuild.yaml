@@ -11,7 +11,7 @@ steps:
 
 # Step 2: Push the Docker image to Google Container Registry (GCR)
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$_PROJECT_ID_/_IMAGE_NAME_']
+  args: ['push', 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_']
 
 images:
 # Specify the Docker image to be pushed to GCR
