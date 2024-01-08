@@ -1,57 +1,47 @@
-# Stage 1
-FROM debian:latest AS build-env
+# Use an official Flutter runtime as a parent image
+FROM ubuntu:latest
 
+# Set the working directory
+WORKDIR /app
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    openssh-client \
+    unzip \
+    python3 \
+    python3-pip
+
+# Install Flutter
+RUN git clone https://github.com/flutter/flutter.git /flutter
+ENV PATH="/flutter/bin:${PATH}"
+
+# Run Flutter precache to download dependencies
+RUN flutter precache
+
+# Set up SSH keys using build arguments
 ARG SSH_PRIVATE_KEY
 ARG KNOWN_HOSTS
 
-# Install dependencies
-RUN apt-get update && \
-    apt-get install -y \
-    curl git wget python3 openssh-client \
-    zip unzip apt-transport-https \
-    ca-certificates gnupg clang \
-    cmake ninja-build pkg-config \
-    libgconf-2-4 gdb libstdc++6 \
-    libglu1-mesa fonts-droid-fallback \
-    libgtk-3-dev
-
-# Set up SSH key
+# Set up SSH keys
 RUN mkdir -p /root/.ssh && \
-    echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_ed25519 && \
-    echo "$KNOWN_HOSTS" > /root/.ssh/known_hosts && \
-    chmod 700 /root/.ssh && \
-    chmod 600 /root/.ssh/id_ed25519 && \
-    touch /root/.ssh/known_hosts && \
-    chmod 644 /root/.ssh/known_hosts && \
-    ssh-keyscan github.com >> /root/.ssh/known_hosts
+    echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_rsa && \
+    chmod 600 /root/.ssh/id_rsa && \
+    echo "$KNOWN_HOSTS" > /root/.ssh/known_hosts
 
-# Clean up
-RUN apt-get clean
-
-# Clone Flutter
-RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
-
-# Set Flutter environment variables
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
-
-# Run Flutter doctor for diagnostics
-RUN flutter doctor -v
-
-# Set Flutter channel, upgrade, and enable web
-RUN flutter channel master
-RUN flutter upgrade
-RUN flutter config --enable-web
-
-# Create a directory for the app and copy the source code
-RUN mkdir /app/
-COPY . /app/
-WORKDIR /app/
+# Copy the rest of the application code
+COPY . .
 
 # Build the Flutter web app
 RUN flutter build web
 
-# Stage 2 
-FROM nginx:1.21.1-alpine
+# Install a simple web server (e.g., using Python)
+RUN pip3 install http.server
 
-# Copy the built Flutter web app from the build stage
-COPY --from=build-env /app/build/web /usr/share/nginx/html
+# Expose the port the app runs on (assuming it's 8080 for web)
+EXPOSE 8080
+
+# CMD ["flutter", "run"]  # No need to run the app, as we only built the web version
+
+# Run a simple web server to serve the Flutter web app
+CMD ["python3", "-m", "http.server", "8080"]
