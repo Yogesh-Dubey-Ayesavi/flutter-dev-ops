@@ -13,5 +13,20 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push','asia-docker.pkg.dev/$_PROJECT_ID_/$_IMAGE_NAME_']
 
+- name: "gcr.io/cloud-builders/gcloud"
+  args:
+      [
+        "run",
+        "deploy",
+        "$_IMAGE_NAME_",
+        "--image",
+        "asia-docker.pkg.dev/$_PROJECT_ID_/$_IMAGE_NAME",
+        "--region",
+        "australia-southeast1",
+        "--platform",
+        "managed",
+        --allow-unauthenticated,
+      ]
+
 options:
   logging: CLOUD_LOGGING_ONLY
