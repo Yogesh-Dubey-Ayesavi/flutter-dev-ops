@@ -3,8 +3,8 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'build'
-    - '--build-arg=SSH_PRIVATE_KEY=$SSH_PRIVATE_KEY'
-    - '--build-arg=KNOWN_HOSTS=$KNOWN_HOSTS'
+    - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
+    - '--build-arg=KNOWN_HOSTS=$_KNOWN_HOSTS_'
     - '-t'
     - 'gcr.io/YOUR_PROJECT_ID/my_flutter_image'
     - '.'
