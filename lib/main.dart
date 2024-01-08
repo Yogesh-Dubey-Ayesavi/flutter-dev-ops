@@ -1,3 +1,4 @@
+import 'package:ed_ui_widget/ed_ui_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -53,7 +54,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-  
+
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 60;
 
@@ -105,6 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+          const  DecoratedContainer(child: Text("Test")),
             const Text(
               'You have pushed the button this many times:',
             ),
@@ -123,5 +125,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
