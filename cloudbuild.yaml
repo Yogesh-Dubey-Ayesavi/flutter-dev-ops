@@ -6,7 +6,7 @@ steps:
     - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
     - '--build-arg=KNOWN_HOSTS=$_KNOWN_HOSTS_'
     - '-t'
-    - '$_IMAGE_NAME_'
+    - 'asia-docker.pkg.dev/$_PROJECT_ID_/$_IMAGE_NAME_'
     - '.'
 
 # Step 2: Push the Docker image to Google Container Registry (GCR)
