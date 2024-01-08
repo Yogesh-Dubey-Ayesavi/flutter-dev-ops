@@ -24,10 +24,4 @@ workflows:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
       - flutter_drive.log
-    publishing:
-      slack:
-        channel: '#cloud-build-notifications'
-        notify_on_build_start: false 
-        notify: 
-          success: false
-          failure: true
+    
