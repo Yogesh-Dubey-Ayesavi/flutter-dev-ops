@@ -6,16 +6,16 @@ steps:
     - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
     - '--build-arg=KNOWN_HOSTS=$_KNOWN_HOSTS_'
     - '-t'
-    - '$_IMAGE_NAME_'
+    - 'a$_IMAGE_NAME_'
     - '.'
 
 # Step 2: Push the Docker image to Google Container Registry (GCR)
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_']
+  args: ['push', 'gcr.io/$_PROJECT_ID_/a$_IMAGE_NAME_']
 
 images:
 # Specify the Docker image to be pushed to GCR
-- 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_'
+- 'gcr.io/$_PROJECT_ID_/a$_IMAGE_NAME_'
 
 options:
   logging: CLOUD_LOGGING_ONLY
