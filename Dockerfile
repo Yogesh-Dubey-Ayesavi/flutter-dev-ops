@@ -61,6 +61,8 @@
 FROM ubuntu:latest
 
 ARG SSH_PRIVATE_KEY
+ARG KNOWN_HOSTS
+
 
 # Update package lists and install necessary packages
 RUN apt-get update && \
