@@ -1,17 +1,16 @@
-sh
-
 #!/bin/bash
 
-# Set the port
-PORT=5000
+# Welcome
+echo 'Server start script initialized...'
 
-# Stop any program currently running on the set port
-echo 'preparing port' $PORT '...'
-fuser -k 5000/tcp
-
-# switch directories
+# Change directories to the release folder
 cd build/web/
 
+echo 'Folder now set to' $PWD
+
 # Start the server
-echo 'Server starting on port' $PORT '...'
+echo 'Starting server on port' $PORT '...'
 python3 -m http.server $PORT
+
+# Exit
+echo 'Server exited...'
