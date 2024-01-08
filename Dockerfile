@@ -14,6 +14,8 @@ RUN apt-get update && \
     libgconf-2-4 gdb libstdc++6 \
     libglu1-mesa fonts-droid-fallback \
     libgtk-3-dev
+    
+RUN apt-get install git -y    
 
 RUN apt-get install openssh-server -y
 
