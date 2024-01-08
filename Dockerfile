@@ -15,6 +15,8 @@ RUN apt-get update && \
     libglu1-mesa fonts-droid-fallback \
     libgtk-3-dev
 
+RUN apt-get install openssh-server -y
+
 # SSH key setup
 RUN mkdir -p /root/.ssh && \
     echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_ed25519 && \
