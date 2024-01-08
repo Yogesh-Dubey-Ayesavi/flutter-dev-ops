@@ -13,17 +13,10 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client curl 
 
 # add credentials on build
 ARG SSH_PRIVATE_KEY
-RUN mkdir /root/.ssh/
-RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_ed25519
-RUN chmod 600 /root/.ssh/id_ed25519
-
-# Add SSH key to SSH agent
-RUN eval $(ssh-agent -s) && \
-    ssh-add /root/.ssh/id_ed25519
-
-# make sure your domain is accepted
-RUN touch /root/.ssh/known_hosts
-RUN ssh-keyscan github.com >> /root/.ssh/known_host
+RUN mkdir -p /root/.ssh        
+RUN chmod -R 600 /root/.ssh/  
+RUN echo "${SSH_PRIVATE_KEY}" > /root/.ssh/id_ed25519
+RUN ssh-keyscan github.com >>/root/.ssh/known_hosts
 
 # Install Flutter
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
