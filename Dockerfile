@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client curl 
 ARG SSH_PRIVATE_KEY
 RUN mkdir /root/.ssh/
 RUN echo "$SSH_PRIVATE_KEY" > /root/.ssh/id_ed25519
+RUN chmod 600 /root/.ssh/id_ed25519
 
 # Add SSH key to SSH agent
 RUN eval $(ssh-agent -s) && \
