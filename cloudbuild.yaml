@@ -28,7 +28,7 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_
+  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_/versions/latest
     env: '_SSH_PRIVATE_KEY_'
 
 options:
