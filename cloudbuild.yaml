@@ -15,7 +15,7 @@ steps:
       - '-c'
       - |
         docker build \
-          --build-arg SSH_PRIVATE_KEY="$$ED_WIDGET_SSH_KEY" \
+          --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
           --build-arg _GUMMY_BEARS_URL=${_SSH_PRIVATE_KEY_} \
           --build-arg _VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT=${_SSH_PRIVATE_KEY_} \
           --build-arg _ENV_MODE=${_SSH_PRIVATE_KEY_} \      
