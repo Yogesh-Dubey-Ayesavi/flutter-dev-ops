@@ -2,7 +2,7 @@ steps:
 # Step 1: Build the Docker image
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
-  args: ['-c', 'docker build --build-arg SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_ -t gcr.io/$_PROJECT_ID/$_IMAGE_NAME_ .']
+  args: ['-c', 'docker build --build-arg SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_ -t gcr.io/$_PROJECT_ID/$_IMAGE_NAME_ .']
   secretEnv: [
     '_SSH_PRIVATE_KEY_']
 
