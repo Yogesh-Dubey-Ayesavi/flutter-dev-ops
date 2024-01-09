@@ -24,12 +24,5 @@ steps:
     - "--platform=managed"
     - "--allow-unauthenticated"
 
-
-
-availableSecrets:
-  secretManager:
-  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_/versions/1
-    env: '_SSH_PRIVATE_KEY_'
-
 options:
   logging: CLOUD_LOGGING_ONLY
