@@ -1,5 +1,6 @@
 steps:
   # Step 1: Build the Docker image
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     entrypoint: 'bash'
     args:
@@ -7,7 +8,10 @@ steps:
       - |
         docker build \
           --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
-          -t gcr.io/${_PROJECT_ID_}/${_IMAGE_NAME_} \
+          --build-arg _GUMMY_BEARS_URL="${_SSH_PRIVATE_KEY_}" \
+          --build-arg _VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${SSH_PRIVATE_KEY}" \
+          --build-arg _ENV_MODE="${SSH_PRIVATE_KEY}" \
+          -t ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}  \
           .
 
     secretEnv: ['_SSH_PRIVATE_KEY_']
