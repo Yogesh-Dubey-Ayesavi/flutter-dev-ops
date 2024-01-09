@@ -6,7 +6,7 @@ steps:
       - |
         docker build \
           --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
-          -t gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_ \
+          -t gcr.io/${_PROJECT_ID_}/${_IMAGE_NAME_} \
           .
   secretEnv: ['_SSH_PRIVATE_KEY_']
 # Step 2: Push the Docker image to Google Container Registry (GCR)
