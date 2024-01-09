@@ -23,7 +23,7 @@ steps:
     - "--platform=managed"
     - "--allow-unauthenticated"
 
-secretEnv: [
+  secretEnv: [
     '_SSH_PRIVATE_KEY_']
 
 availableSecrets:
