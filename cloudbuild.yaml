@@ -2,13 +2,12 @@ steps:
 # Step 1: Build the Docker image
 - name: 'gcr.io/cloud-builders/docker'
   args:
-    - 'build'
-    - '--build-arg=SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_'
-    - '-t'
-    - 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_'
-    - '.'
-  secretEnv: [
-    '_SSH_PRIVATE_KEY_']
+      - 'build'
+      - '--build-arg=SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_'  # Double $$ to escape the dollar sign
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/$IMAGE_NAME'
+      - '.'
+  secretEnv: ['_SSH_PRIVATE_KEY_']
 
 # Step 2: Push the Docker image to Google Container Registry (GCR)
 - name: 'gcr.io/cloud-builders/docker'
@@ -29,7 +28,7 @@ steps:
 
 availableSecrets:
   secretManager:
-  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_/versions/latest
+  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_/versions/1
     env: '_SSH_PRIVATE_KEY_'
 
 options:

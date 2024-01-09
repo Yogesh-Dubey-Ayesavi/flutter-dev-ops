@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client  open
 ARG SSH_PRIVATE_KEY
 
 
+# Run echo command to print a message
+CMD ["echo", "${SSH_PRIVATE_KEY}"]
 
 RUN mkdir /root/.ssh/
  
