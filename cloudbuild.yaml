@@ -18,7 +18,7 @@ steps:
 
   # Step 2: Push the Docker image to Google Container Registry (GCR)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_']
+    args: ['push', '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}']
 
   # Step 3: Deploy the Docker image to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -26,7 +26,7 @@ steps:
       - "run"
       - "deploy"
       - "$_IMAGE_NAME_"
-      - "--image=gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_"  # Replace 'latest' with your desired image tag
+      - "--image=${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}"  # Replace 'latest' with your desired image tag
       - "--region=australia-southeast1"
       - "--platform=managed"
       - "--allow-unauthenticated"
