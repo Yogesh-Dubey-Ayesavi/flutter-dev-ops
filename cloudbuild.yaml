@@ -5,7 +5,7 @@ steps:
       - '-c'
       - |
         docker build \
-          --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
+          --build-arg SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_ \
           -t gcr.io/${_PROJECT_ID_}/${_IMAGE_NAME_} \
           .
   secretEnv: ['_SSH_PRIVATE_KEY_']
