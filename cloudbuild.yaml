@@ -3,7 +3,7 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'build'
-    - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
+    - '--build-arg=SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_'
     - '-t'
     - 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_'
     - '.'
@@ -22,6 +22,14 @@ steps:
     - "--region=australia-southeast1"
     - "--platform=managed"
     - "--allow-unauthenticated"
+
+secretEnv: [
+    '_SSH_PRIVATE_KEY_']
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_
+    env: '_SSH_PRIVATE_KEY_'
 
 options:
   logging: CLOUD_LOGGING_ONLY
