@@ -5,7 +5,7 @@ steps:
       - 'build'
       - '--build-arg=SSH_PRIVATE_KEY=$$_SSH_PRIVATE_KEY_'  # Double $$ to escape the dollar sign
       - '-t'
-      - 'gcr.io/$PROJECT_ID/$IMAGE_NAME'
+      - 'gcr.io/$PROJECT_ID/$_IMAGE_NAME_'
       - '.'
   secretEnv: ['_SSH_PRIVATE_KEY_']
 
