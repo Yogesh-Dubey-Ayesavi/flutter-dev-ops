@@ -7,10 +7,9 @@ steps:
       - |
         docker build \
           --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
-  
-          --build-arg _GUMMY_BEARS_URL="${_SSH_PRIVATE_KEY_}" \
-          --build-arg _VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${_SSH_PRIVATE_KEY_}" \
-          --build-arg _ENV_MODE="${_SSH_PRIVATE_KEY_}" \
+          --build-arg GUMMY_BEARS_URL="${_KNOWN_HOSTS_}" \
+          --build-arg VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${_SSH_PRIVATE_KEY_}" \
+          --build-arg ENV_MODE="${_PROJECT_ID_}" \
           -t gcr.io/${_PROJECT_ID_}/${_IMAGE_NAME_} \
           .
 
