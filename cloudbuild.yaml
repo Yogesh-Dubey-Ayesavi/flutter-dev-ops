@@ -11,7 +11,7 @@ steps:
           --build-arg _GUMMY_BEARS_URL="${_SSH_PRIVATE_KEY_}" \
           --build-arg _VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${_SSH_PRIVATE_KEY_}" \
           --build-arg _ENV_MODE="${_SSH_PRIVATE_KEY_}" \
-          -t "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}"  \
+          -t ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME} \
           .
 
     secretEnv: ['_SSH_PRIVATE_KEY_']
