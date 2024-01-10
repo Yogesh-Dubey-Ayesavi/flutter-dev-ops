@@ -10,14 +10,14 @@ steps:
           --build-arg GUMMY_BEARS_URL="${_KNOWN_HOSTS_}" \
           --build-arg VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${_SSH_PRIVATE_KEY_}" \
           --build-arg ENV_MODE="${_PROJECT_ID_}" \
-          -t ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA} \
+          -t ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA} \
           .
 
     secretEnv: ['_SSH_PRIVATE_KEY_']
 
   # Step 2: Push the Docker image to Google Container Registry (GCR)
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}']
+    args: ['push', '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA}']
 
   # Step 3: Deploy the Docker image to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
@@ -25,7 +25,7 @@ steps:
       - "run"
       - "deploy"
       - "$_IMAGE_NAME_"
-      - "--image=${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${_DEPLOY_NAME}:${SHORT_SHA}"  # Replace 'latest' with your desired image tag
+      - "--image=${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA}"  # Replace 'latest' with your desired image tag
       - "--region=australia-southeast1"
       - "--platform=managed"
       - "--allow-unauthenticated"
