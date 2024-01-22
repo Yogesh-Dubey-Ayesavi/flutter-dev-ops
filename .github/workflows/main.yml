@@ -54,7 +54,7 @@ jobs:
           curl -X POST \
             -H "Authorization: token $GH_TOKEN" \
             -H "Content-Type: application/json" \
-            -d $release_payload \
+            -d  "$release_payload" \
             "https://api.github.com/repos/${{ github.repository }}/releases"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
