@@ -8,6 +8,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -19,16 +20,13 @@ jobs:
         run: flutter pub get
 
       - name: Check for Version Change
-        id: version-check
         run: |
           VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
           if git tag -l "$VERSION" | grep "$VERSION"; then
             echo "No version change. Skipping release."
-            echo "::set-output name=result::skipped"
             exit 0
           else
             echo "Version changed. Continuing with the release."
-            echo "::set-output name=result::success"
           fi
 
       - name: Extract Release Description from CHANGELOG.md
@@ -36,25 +34,24 @@ jobs:
         run: |
           DESCRIPTION=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
           echo "Description: $DESCRIPTION"
+        continue-on-error: true
 
-      # - name: Create Release Tag
-      #   if: steps.version-check.outputs.result == 'success'
-      #   run: |
-      #     VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
-      #     git config --global user.email "actions@github.com"
-      #     git config --global user.name "GitHub Actions"
-      #     git tag "$VERSION"
-      #     git push origin "$VERSION"
-
-      - name: Create GitHub Release
-        if: steps.version-check.outputs.result == 'success'
+      - name: Create Release Tag
         run: |
           VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
-          body="${DESCRIPTION}"
-          echo "RELEASE_BODY=${body}" >> $GITHUB_ENV
-          echo "RELEASE_VERSION=${VERSION}" >> $GITHUB_ENV
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git tag "$VERSION"
+          git push origin "$VERSION"
 
-      - name: Use GitHub Release Info
+      - name: Create GitHub Release
         run: |
-          echo "Version: $RELEASE_VERSION"
-          echo "Body: $RELEASE_BODY"
+          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          body="${{ steps.extract-description.outputs.DESCRIPTION }}"
+          curl -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\"$body\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/releases"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
