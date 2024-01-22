@@ -46,12 +46,18 @@ jobs:
 
       - name: Create GitHub Release
         run: |
-          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
-          body=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
+         VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+         body=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
+
+          # Escape special characters in the body using jq
+          escaped_body=$(echo "$body" | jq -s -R -r @uri)
+
+          # Construct JSON payload using printf
+          release_payload="{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\"$escaped_body\"}"
           curl -X POST \
             -H "Authorization: token $GH_TOKEN" \
             -H "Content-Type: application/json" \
-            -d "{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\"$body\"}" \
+            -d "$release_payload" \
             "https://api.github.com/repos/${{ github.repository }}/releases"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
