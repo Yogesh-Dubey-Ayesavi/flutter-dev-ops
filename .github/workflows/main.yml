@@ -50,7 +50,7 @@ jobs:
          body=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
 
           # Construct JSON payload using printf
-          release_payload="{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\$body}"
+          release_payload="{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\"$body\"}"
           curl -X POST \
             -H "Authorization: token $GH_TOKEN" \
             -H "Content-Type: application/json" \
