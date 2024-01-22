@@ -24,17 +24,18 @@ jobs:
           VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
           if git tag -l "$VERSION" | grep "$VERSION"; then
             echo "No version change. Skipping release."
+            echo "::set-output name=result::skipped"
             exit 0
           else
             echo "Version changed. Continuing with the release."
+            echo "::set-output name=result::success"
           fi
 
       - name: Extract Release Description from CHANGELOG.md
         id: extract-description
         run: |
           DESCRIPTION=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
-          echo $DESCRIPTION
-        shell: bash
+          echo "Description: $DESCRIPTION"
 
       - name: Create Release Tag
         if: steps.version-check.outputs.result == 'success'
@@ -57,4 +58,3 @@ jobs:
         run: |
           echo "Version: $RELEASE_VERSION"
           echo "Body: $RELEASE_BODY"
-        shell: bash
