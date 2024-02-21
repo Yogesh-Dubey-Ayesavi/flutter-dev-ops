@@ -11,6 +11,11 @@ RUN apt-get update && apt-get install -y unzip xz-utils git openssh-client  open
 # add credentials on build
 ARG SSH_PRIVATE_KEY
 
+ARG _GUMMY_BEARS_URL="default gummy bears URL"
+ARG _VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="default cloud function entrypoint"
+ARG _ENV_MODE="dev"
+
+
 
 
 

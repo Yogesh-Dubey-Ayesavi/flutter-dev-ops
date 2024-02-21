@@ -31,17 +31,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  go_router: ^13.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  # ed_ui_widget: 
-  #   git:
-  #     url : git@github.com:nomanmurtaza786/ed_ui_widget.git
-  #     ref: main  # Specify the branch, tag, or commit hash you want to use
-
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -52,6 +47,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  message_models: 
+    git:
+      url: https://github.com/Yogesh-Dubey-Ayesavi/message_models.git
+      ref: main # branch name
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
