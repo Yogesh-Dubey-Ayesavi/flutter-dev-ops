@@ -1,0 +1,60 @@
+name: Release Tag on Version Change
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Check for Version Change
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          if git tag -l "$VERSION" | grep "$VERSION"; then
+            echo "No version change. Skipping release."
+            exit 0
+          else
+            echo "Version changed. Continuing with the release."
+          fi
+
+      - name: Extract Release Description from CHANGELOG.md
+        id: extract-description
+        run: |
+          DESCRIPTION=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
+          echo "Description: $DESCRIPTION"
+        continue-on-error: true
+
+      - name: Create Release Tag
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git tag "$VERSION"
+          git push origin "$VERSION"
+
+      - name: Create GitHub Release
+        run: |
+         VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          body=$(awk -v version="$VERSION" '$0 ~ version, /\*\*\[[0-9]+\.[0-9]+\.[0-9]+\]/ {if (!/## /) print}' CHANGELOG.md | grep -v "## $VERSION")
+
+          # Construct JSON payload using printf
+          release_payload="{\"tag_name\":\"$VERSION\",\"name\":\"$VERSION\",\"body\":\"$body\",\"generate_release_notes\":true}"
+          curl -X POST \
+            -H "Authorization: token $GH_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "$release_payload" \
+            "https://api.github.com/repos/${{ github.repository }}/releases"
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

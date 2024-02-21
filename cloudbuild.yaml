@@ -1,39 +1,30 @@
 steps:
-  # Step 1: Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        docker build \
-          --build-arg SSH_PRIVATE_KEY="$$_SSH_PRIVATE_KEY_" \
-          --build-arg GUMMY_BEARS_URL="${_KNOWN_HOSTS_}" \
-          --build-arg VALIDATE_FIREBASE_ID_TOKEN_ENTRYPOINT="${_SSH_PRIVATE_KEY_}" \
-          --build-arg ENV_MODE="${_PROJECT_ID_}" \
-          -t ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA} \
-          .
+# Step 1: Build the Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '--build-arg=SSH_PRIVATE_KEY=$_SSH_PRIVATE_KEY_'
+    - '-t'
+    - 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_'
+    - '.'
 
-    secretEnv: ['_SSH_PRIVATE_KEY_']
 
-  # Step 2: Push the Docker image to Google Container Registry (GCR)
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA}']
 
-  # Step 3: Deploy the Docker image to Cloud Run
-  - name: "gcr.io/cloud-builders/gcloud"
-    args:
-      - "run"
-      - "deploy"
-      - "$_IMAGE_NAME_"
-      - "--image=${LOCATION}-docker.pkg.dev/${PROJECT_ID}/edapp-repo/${REPO_NAME}:${SHORT_SHA}"  # Replace 'latest' with your desired image tag
-      - "--region=australia-southeast1"
-      - "--platform=managed"
-      - "--allow-unauthenticated"
+# Step 2: Push the Docker image to Google Container Registry (GCR)
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_']
 
-availableSecrets:
-  secretManager:
-    - versionName: projects/918746432463/secrets/_SSH_PRIVATE_KEY_/versions/1
-      env: '_SSH_PRIVATE_KEY_'
+# Step 3: Deploy the Docker image to Cloud Run
+- name: "gcr.io/cloud-builders/gcloud"
+  args:
+    - "run"
+    - "deploy"
+    - "$_IMAGE_NAME_"
+    - "--image=gcr.io/$_PROJECT_ID_/$_IMAGE_NAME_"  # Replace 'latest' with your desired image tag
+    - "--region=australia-southeast1"
+    - "--platform=managed"
+    - "--allow-unauthenticated"
+
 
 options:
   logging: CLOUD_LOGGING_ONLY
