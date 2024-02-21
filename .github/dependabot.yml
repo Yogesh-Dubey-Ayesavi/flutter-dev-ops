@@ -1,4 +1,10 @@
 version: 2
+registries:
+  github-octocat:
+    type: git
+    url:  https://github.com
+    username: nomanmurtaza786
+    password: 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
 enable-beta-ecosystems: true
 updates:
   - package-ecosystem: "pub"
@@ -6,9 +12,3 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 5
-registries:
-  github-octocat:
-    type: git
-    url:  https://github.com
-    username: nomanmurtaza786
-    password: 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
